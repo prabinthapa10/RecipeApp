@@ -1,21 +1,57 @@
 {% extends 'base.html' %} {% block start%}
-<form class="recipe-form">
+<form class="recipe-form" method="post" enctype="multipart/form-data">
+  {% csrf_token%}
   <div class="mb-3">
     <label class="form-label">Recipe Name</label>
-    <input type="text" class="form-control" />
+    <input required name="name" type="text" class="form-control" />
   </div>
   <div class="mb-3">
     <label for="recipe-description" class="form-label"
       >Recipe Description</label
     >
-    <textarea class="form-control" id="recipe-description" rows="4"></textarea>
+    <textarea
+      name="desc"
+      class="form-control"
+      id="recipe-description"
+      rows="4"
+    ></textarea>
   </div>
   <div class="mb-3">
     <label class="form-label">Choose Image</label>
-    <input type="file" class="form-control-file" />
+    <input name="image" type="file" class="form-control-file" />
   </div>
   <button type="submit" class="btn btn-primary">Submit</button>
 </form>
+<div>
+  {{recipes}}
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Recipe Name</th>
+        <th scope="col">Recipe Description</th>
+        <th scope="col">Image</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for recipe in recipes%}
+      <tr>
+        <th scope="row">{{forlop.counter}}</th>
+        <td>{{recipe.name}}</td>
+        <td>{{recipe.description}}</td>
+        <td>
+          <img src="/media/{{recipe.image}}" width="50" alt="{{recipe.name}}" />
+        </td>
+        <td>
+          <a href="/deleteRecipe/{{recipe.id}}"><button>Delete</button></a>
+          <a href="/deleteRecipe/{{recipe.id}}"><button>Update</button></a>
+        </td>
+      </tr>
+      {% endfor%}
+    </tbody>
+  </table>
+</div>
 <style>
   body {
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
