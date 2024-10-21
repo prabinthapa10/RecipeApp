@@ -1,4 +1,6 @@
 {% extends 'base.html' %} {% block start%}
+
+<div>{{request.user.first_name}}</div>
 <form class="recipe-form" method="post" enctype="multipart/form-data">
   {% csrf_token%}
   <div class="mb-3">

@@ -24,9 +24,13 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home),
+    path('home/', home),
     path('recipes/', recipes),
     path('deleteRecipe/<id>/', deleteRecipe),
-    path('updateRecipe/<id>/', updateRecipe)
+    path('updateRecipe/<id>/', updateRecipe),
+    path('login/', login_page ),
+    path('register/', register), 
+    path('logout/', logout_page)
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

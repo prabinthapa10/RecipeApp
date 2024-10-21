@@ -1,0 +1,79 @@
+{% extends 'base.html' %} {% block start %}
+
+<div class="form-container">
+  {% if messages %}
+  <div class="alert alert-primary">
+    {% for message in messages %} {{message}} {% endfor %}
+  </div>
+  {% endif %}
+  <form method="post">
+    {% csrf_token %}
+    <div class="mb-3">
+      <label class="form-label">Username</label>
+      <input
+        name="userName"
+        type="text"
+        class="form-control"
+        id="userName"
+        placeholder="Enter your username"
+      />
+    </div>
+    <div class="mb-3">
+      <label class="form-label">First Name</label>
+      <input
+        name="firstName"
+        type="text"
+        class="form-control"
+        placeholder="Enter your first name"
+      />
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Last Name</label>
+      <input
+        type="text"
+        class="form-control"
+        name="lastName"
+        placeholder="Enter your last name"
+      />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Password</label>
+      <input
+        name="password"
+        type="password"
+        class="form-control"
+        placeholder="Enter your password"
+      />
+    </div>
+    <div class="login-link">
+      <p>Already have an account? <a href="/login/">Login</a></p>
+    </div>
+    <button type="submit" class="btn btn-primary">Register</button>
+  </form>
+</div>
+
+<style>
+  body {
+    background-color: #f8f9fa; /* Light background color */
+  }
+  .form-container {
+    max-width: 500px; /* Set a max width */
+    margin: auto; /* Center the form */
+    padding: 2rem; /* Add padding */
+    background-color: #ffffff; /* White background for the form */
+    border-radius: 0.5rem; /* Rounded corners */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  }
+  .form-label {
+    font-weight: bold; /* Bold labels */
+  }
+  .btn-primary {
+    width: 100%; /* Full-width button */
+  }
+  .login-link {
+    text-align: center; /* Center the login link */
+  }
+</style>
+
+{% endblock %}

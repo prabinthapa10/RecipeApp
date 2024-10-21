@@ -1,6 +1,12 @@
 from django.shortcuts import render, redirect
 from .models import recipes_table
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
+
+# @login_required(login_url='/login/')
 # Create your views here.
 def home(request):
     return render(request, "home/home.html")
@@ -17,7 +23,6 @@ def recipes(request):
         saveRecipe.save()
         return redirect("/recipes/")
 
-
 # serach
     extractQuery = recipes_table.objects.all()
 
@@ -30,6 +35,9 @@ def recipes(request):
     # ADD DATA AND SAVE
     context = {"recipes": extractQuery}
     return render(request, "home/recipes.html", context)
+
+
+
 
 def updateRecipe(request, id):
     extractDatafromId = recipes_table.objects.get(id = id)
@@ -62,3 +70,50 @@ def deleteRecipe(request, id):
     extractDatafromId.delete()
 
     return redirect("/recipes/")
+
+
+# register features
+def register(request):
+    if request.method == "POST":
+        firstName = request.POST.get("firstName")
+        lastName = request.POST.get("lastName")
+        userName = request.POST.get("userName")
+        password = request.POST.get("password")
+
+        createUser = User.objects.create(first_name = firstName, last_name= lastName, username=userName)
+
+        createUser.set_password(password)
+
+        createUser.save()
+        messages.info(request,"Added successfully")
+        return redirect("/register/")
+    
+    return render(request, 'home/register.html')
+
+
+def login_page(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        if not User.objects.filter(username=username).exists():
+            messages.info(request,"Invalid usename")
+            return redirect("/login/")
+        
+        
+        userObject = authenticate(username=username, password=password)
+
+        if userObject is None:
+            messages.error(request, "invalid passwod")
+            return redirect("/login/")
+        else:
+            # # session mentain
+            login(request, userObject)
+            return redirect("/recipes/")
+
+
+    return render(request, 'home/login.html')
+
+def logout_page(request):
+    logout(request)
+    return redirect("/home/")
